@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "out",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
+    "moduleResolution": "node"
+  },
+  "exclude": ["node_modules"]
+}

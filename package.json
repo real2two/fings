@@ -1,0 +1,16 @@
+{
+  "name": "fings",
+  "version": "0.0.1",
+  "description": "Create your own fake Wings instances and panel remote routes, which you can customize what it does.",
+  "main": "src/index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "Two",
+  "dependencies": {
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/ssh2": "^1.11.11",
+    "hyper-express": "^6.7.0"
+  }
+}
