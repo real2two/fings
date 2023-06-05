@@ -21,9 +21,9 @@ export interface WingsResults {
   }
   body: any;
 
-  status: (status: number) => any;
-  send: (body: string) => any;
-  json: (body: object) => any;
+  status: (status: number) => WingsResults;
+  send: (body: string) => WingsResults;
+  json: (body: object) => WingsResults;
 }
 
 declare module "events" {

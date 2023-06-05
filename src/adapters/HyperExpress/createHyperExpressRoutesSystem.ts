@@ -1,6 +1,6 @@
 import { WingsEvents } from "../../structures/WingsEvents";
 import type { Router } from "hyper-express";
-import type { Wings } from "../../structures/Wings";
+import { Wings } from "../../structures/Wings";
 
 export function createHyperExpressRoutesSystem(wings: Wings, router: Router) {
   router.post("/api/update", (req, res) => {
@@ -9,13 +9,23 @@ export function createHyperExpressRoutesSystem(wings: Wings, router: Router) {
 
   router.get("/api/system", (req, res) => {
     // GET /api/system
-    wings.emit(WingsEvents.getSystemInformation, {
+    const args = {
       headers: req.headers,
       body: req.body,
-      status: (status: number) => res.status(status),
-      send: (body: string) => res.send(body),
-      json: (body: object) => res.json(body),
-    });
+      status: (status: number) => {
+        res.status(status);
+        return args;
+      },
+      send: (body: string) => {
+        res.send(body);
+        return args;
+      },
+      json: (body: object) => {
+        res.json(body);
+        return args;
+      },
+    };
+    wings.emit(WingsEvents.getSystemInformation, args);
   });
 
   router.get("/api/servers", (req, res) => {
