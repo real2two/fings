@@ -1,7 +1,8 @@
 import type { Router } from "hyper-express";
 import type { Wings } from "../../structures/Wings";
+import type { Emit } from "../createHyperExpressClient";
 
-export function createHyperExpressRoutesServerOptions(wings: Wings, router: Router) {
+export function createHyperExpressRoutesServerOptions({ wings, emit, router }: { wings: Wings, emit: Emit, router: Router }) {
   router.get("/:server/logs", (req, res) => {
     // GET /api/servers/:server/logs
   });

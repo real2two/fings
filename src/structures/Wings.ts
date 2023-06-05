@@ -22,6 +22,7 @@ export interface WingsResults {
   body: any;
 
   status: (status: number) => WingsResults;
+  sendStatus: (status: number) => WingsResults;
   send: (body: string) => WingsResults;
   json: (body: object) => WingsResults;
 }

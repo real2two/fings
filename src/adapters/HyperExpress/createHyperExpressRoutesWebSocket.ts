@@ -1,7 +1,8 @@
 import type { Router } from "hyper-express";
 import type { Wings } from "../../structures/Wings";
+import type { Emit } from "../createHyperExpressClient";
 
-export function createHyperExpressRoutesWebSocket(wings: Wings, router: Router) {
+export function createHyperExpressRoutesWebSocket({ wings, emit, router }: { wings: Wings, emit: Emit, router: Router }) {
   // GET /api/servers/:server/ws
   
   router.ws("/api/servers/:server/ws", {
