@@ -1,17 +1,55 @@
-import { WingsEvents } from "./WingsEvents";
+import { EventEmitter } from "events";
+import { WingsEventsJWT } from "./WingsEvents";
 
-export class Wings {
-  on(name: string, listener: any) {
-    if (!this.eventExists(name)) throw new Error("Event with provided name doesn't exist");
+interface WingsOptions {
+  authorization: WingsAuthorizationFunction,
+  
+  // EventEmitter options
+  captureRejections?: boolean | undefined;
+}
 
+type WingsAuthorizationFunction = (evt: WingsAuthorizationFunctionArguments) => boolean | Promise<boolean>;
 
+export interface WingsAuthorizationFunctionArguments extends WingsResults {
+  type: "token" | "jwt";
+  eventName: string;
+}
+
+export interface WingsResults {
+  headers: {
+    [key: string]: string;
   }
-  call(name: string, evt: object) {
-    if (!this.eventExists(name)) throw new Error("Event with provided name doesn't exist");
+  body: any;
 
+  status: (status: number) => any;
+  send: (body: string) => any;
+  json: (body: object) => any;
+}
+
+declare module "events" {
+  interface EventEmitter {
+    emit(eventName: string, args: WingsResults): boolean | Promise<boolean>;
+  }
+}
+
+export class Wings extends EventEmitter {
+  authorization: WingsAuthorizationFunction;
+
+  constructor(options?: WingsOptions) {
+    super({ captureRejections: options?.captureRejections });
+    this.authorization = options?.authorization || (() => true);
+  }
+  
+  setAuthorization(func: WingsAuthorizationFunction) {
+    this.authorization = func;
   }
 
-  eventExists(name: string) {
-    return (<any>Object).values(WingsEvents).includes(name);
+  async emit(eventName: string, args: WingsResults) {
+    if (await this.authorization({
+      type: WingsEventsJWT.includes(eventName) ? "jwt" : "token",
+      eventName,
+      ...args,
+    }) === false) return false;
+    return super.emit(eventName, args);
   }
 }

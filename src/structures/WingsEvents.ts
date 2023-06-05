@@ -1,3 +1,13 @@
+export const WingsEventsJWT = [
+  "downloadBackup",
+  "downloadFile",
+  "uploadFile",
+
+  "openServerConsole",
+  
+  "startServerTransfer",
+];
+
 export enum WingsEvents {
   downloadBackup = "downloadBackup",
   downloadFile = "downloadFile",
@@ -37,7 +47,8 @@ export enum WingsEvents {
   getServers = "getServers",
   deleteServer = "deleteServer",
   
-  deleteIncomingServerTransfer = "deleteIncomingServerTransfer",
-  createServerTransfer = "createServerTransfer",
-  deleteOutgoingServerTransfer = "deleteOutgoingServerTransfer",
-};
+  startServerTransfer = "startServerTransfer", // POST /api/transfers
+  deleteIncomingServerTransfer = "deleteIncomingServerTransfer", // DELETE /api/transfers/:server
+  createServerTransfer = "createServerTransfer", // POST /api/servers/:server/transfer
+  deleteOutgoingServerTransfer = "deleteOutgoingServerTransfer", // DELETE /api/servers/:server/transfer
+}
