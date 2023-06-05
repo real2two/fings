@@ -45,6 +45,8 @@ export enum WingsEvents {
   deletePullServerFile = "deletePullServerFile" ,
 
   getServers = "getServers",
+  createServer = "createServer",
+  getServerDetails = "getServerDetails",
   deleteServer = "deleteServer",
   
   startServerTransfer = "startServerTransfer", // POST /api/transfers
