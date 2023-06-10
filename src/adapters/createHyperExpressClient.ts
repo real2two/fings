@@ -7,33 +7,36 @@ import {
   createHyperExpressRoutesTransfers,
   createHyperExpressRoutesWebSocket,
 } from "./HyperExpress";
-import type { Wings } from "../structures/Wings";
+import type { Wings, WingsResults } from "../structures/Wings";
 
-export type Emit = (eventName: string, req: Request, res: Response) => Promise<boolean>;
+export type Emit = (eventName: string, req: Request, res: Response) => void;
 
 export function createHyperExpressClient(wings: Wings) {
   const emit = (eventName: string, req: Request, res: Response) => {
-    const args = {
-      headers: req.headers,
-      body: req.body,
-      status: (status: number) => {
-        res.status(status);
-        return args;
-      },
-      sendStatus: (status: number) => {
-        res.sendStatus(status);
-        return args;
-      },
-      send: (body: string) => {
-        res.send(body);
-        return args;
-      },
-      json: (body: object) => {
-        res.json(body);
-        return args;
-      },
-    };
-    return wings.emit(eventName, args);
+    res.atomic(async () => {
+      const args: WingsResults = {
+        headers: req.headers,
+        body: ["GET", "DELETE", "OPTIONS", "HEAD"].includes(req.method) ? null : await req.json({}),
+        status: status => {
+          res.status(status);
+          return args;
+        },
+        sendStatus: status => {
+          res.sendStatus(status);
+          return args;
+        },
+        send: body => {
+          res.send(body);
+          return args;
+        },
+        json: body => {
+          res.json(body);
+          return args;
+        },
+      };
+      
+      wings.emit(eventName, args);
+    });
   };
 
   const router = new Router();
