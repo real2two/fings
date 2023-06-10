@@ -26,7 +26,7 @@ export function createHyperExpressRoutesServerFiles({ wings, emit, router }: { w
 
   router.post("/:server/files/write", (req, res) => {
     // POST /api/servers/:server/files/write
-    emit(WingsEvents.writeServerFileContent, req, res);
+    emit(WingsEvents.writeServerFileContent, req, res, false);
   });
 
   router.post("/:server/files/create-directory", (req, res) => {

@@ -9,20 +9,27 @@ import {
 } from "./HyperExpress";
 import type { Wings, WingsResults } from "../structures/Wings";
 
-export type Emit = (eventName: string, req: Request, res: Response) => void;
+export type Emit = (eventName: string, req: Request, res: Response, json?: boolean) => void;
 
 export function createHyperExpressClient(wings: Wings) {
-  const emit = (eventName: string, req: Request, res: Response) => {
+  const emit = (eventName: string, req: Request, res: Response, json = true) => {
     res.atomic(async () => {
       const args: WingsResults = {
         headers: req.headers,
-        body: ["GET", "DELETE", "OPTIONS", "HEAD"].includes(req.method) ? null : await req.json({}),
+        body:
+          ["GET", "DELETE", "OPTIONS", "HEAD"].includes(req.method) ?
+            null :
+            (
+              json ?
+                await req.json({}) :
+                await req.text()
+            ),
         status: status => {
           res.status(status);
           return args;
         },
         sendStatus: status => {
-          res.sendStatus(status);
+          res.status(status).send(status.toString());
           return args;
         },
         send: body => {
