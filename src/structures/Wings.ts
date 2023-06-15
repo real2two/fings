@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { WingsEvents, WingsEventsJWT } from "./WingsEvents";
+import type { ReadStream } from "fs";
 
 interface WingsOptions {
   authorization: WingsAuthorizationFunction,
@@ -30,6 +31,7 @@ export interface WingsResults {
   sendStatus: (status: number) => WingsResults;
   send: (body: string) => WingsResults;
   json: (body: object) => WingsResults;
+  stream: (readable: ReadStream) => WingsResults;
 }
 
 export interface WingsResultsWebSocket {

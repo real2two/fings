@@ -40,6 +40,10 @@ export function createHyperExpressClient(wings: Wings) {
           res.json(body);
           return args;
         },
+        stream: readable => {
+          res.stream(readable);
+          return args;
+        }
       };
       
       wings.emit(eventName, args);
