@@ -77,6 +77,12 @@ export type WingsBodyCheckKeys = // Everything besides openServerConsole.
   "deleteOutgoingServerTransfer";
 
 export const WingsBodyCheck = {
+  /**
+   * Check if the request values are valid.
+   * @param eventName The event name.
+   * @param data The values for the event.
+   * @returns A boolean determining if the values were correct or not.
+   */
   check: (eventName: WingsBodyCheckKeys, data: unknown) => {
     const checkArgTypes = WingsBodyCheck[eventName];
     return typeof checkArgTypes === "function" && checkArgTypes(data);
