@@ -3,14 +3,19 @@
   "version": "0.0.1",
   "description": "Create your own fake Wings instances and panel remote routes, which you can customize what it does.",
   "main": "src/index.ts",
-  "scripts": {},
+  "scripts": {
+    "prepare": "ts-patch install"
+  },
   "keywords": [],
   "author": "Two",
   "dependencies": {
-    "ts-node": "^10.9.1"
+    "hyper-express": "^6.7.0",
+    "typia": "^4.0.9"
   },
   "devDependencies": {
     "@types/ssh2": "^1.11.11",
-    "hyper-express": "^6.7.0"
+    "ts-node": "^10.9.1",
+    "ts-patch": "^3.0.0",
+    "typescript": "^5.1.3"
   }
 }

@@ -2,12 +2,16 @@ import { EventEmitter } from "events";
 import { WingsEvents, WingsEventsJWT } from "./WingsEvents";
 import type { ReadStream } from "fs";
 
+// Wings options
+
 interface WingsOptions {
   authorization: WingsAuthorizationFunction,
   
   // EventEmitter options
   captureRejections?: boolean | undefined;
 }
+
+// Authorization argument types
 
 type WingsAuthorizationFunction = (evt: WingsAuthorizationFunctionArguments | WingsAuthorizationFunctionArgumentsWebsocket) => boolean | Promise<boolean>;
 
@@ -25,6 +29,8 @@ export interface WingsAuthorizationFunctionArgumentsWebsocket extends WingsResul
   type: "ws";
   eventName: string;
 }
+
+// Result types
 
 export interface WingsResults {
   headers: {
@@ -57,6 +63,8 @@ export interface WingsResultsWebSocket {
   onMessage: ((message: string) => any) | undefined;
   onClose: (() => any) | undefined;
 }
+
+// Extended event emitter
 
 declare module "events" {
   interface EventEmitter {
