@@ -22,10 +22,10 @@ export function createHyperExpressRoutesServer({ wings, emit, router }: { wings:
     emit(WingsEvents.deleteServer, req, res);
   });
   
-  createHyperExpressRoutesServerBackup({ wings, emit, router });
-  createHyperExpressRoutesServerFiles({ wings, emit, router });
-  createHyperExpressRoutesServerOptions({ wings, emit, router });
-  createHyperExpressRoutesServerTransfer({ wings, emit, router });
+  createHyperExpressRoutesServerBackup({ wings, emit, router: serverRouter });
+  createHyperExpressRoutesServerFiles({ wings, emit, router: serverRouter });
+  createHyperExpressRoutesServerOptions({ wings, emit, router: serverRouter });
+  createHyperExpressRoutesServerTransfer({ wings, emit, router: serverRouter });
 
   router.use("/api/servers", serverRouter);
 }

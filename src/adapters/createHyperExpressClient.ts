@@ -14,39 +14,17 @@ export type Emit = (eventName: string, req: Request, res: Response, json?: boole
 export function createHyperExpressClient(wings: Wings) {
   const emit = (eventName: string, req: Request, res: Response, json = true) => {
     res.atomic(async () => {
-      const args: WingsResults = {
-        headers: req.headers,
-        body:
-          ["GET", "DELETE", "OPTIONS", "HEAD"].includes(req.method) ?
-            null :
-            (
-              json ?
-                await req.json({}) :
-                await req.text()
-            ),
-        status: status => {
-          res.status(status);
-          return args;
-        },
-        sendStatus: status => {
-          res.status(status).send(status.toString());
-          return args;
-        },
-        send: body => {
-          res.send(body);
-          return args;
-        },
-        json: body => {
-          res.json(body);
-          return args;
-        },
-        stream: readable => {
-          res.stream(readable);
-          return args;
-        }
-      };
-      
-      wings.emit(eventName, args);
+      wings.emit(eventName, createWingsResultsObject({
+        req,
+        res,
+        body: ["GET", "DELETE", "OPTIONS", "HEAD"].includes(req.method) ?
+          null :
+          (
+            json ?
+              await req.json({}) :
+              await req.text()
+          )
+      }));
     });
   };
 
@@ -58,4 +36,32 @@ export function createHyperExpressClient(wings: Wings) {
   createHyperExpressRoutesSystem({ wings, emit, router });
   createHyperExpressRoutesServer({ wings, emit, router });
   return router;
+}
+
+export function createWingsResultsObject({ req, res, body }: { req: Request, res: Response, body?: any }) {
+  const args: WingsResults = {
+    headers: req.headers,
+    body,
+    status: status => {
+      res.status(status);
+      return args;
+    },
+    sendStatus: status => {
+      res.status(status).send(status.toString());
+      return args;
+    },
+    send: body => {
+      res.send(body);
+      return args;
+    },
+    json: body => {
+      res.json(body);
+      return args;
+    },
+    stream: readable => {
+      res.stream(readable);
+      return args;
+    }
+  };
+  return args;
 }

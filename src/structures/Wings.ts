@@ -16,6 +16,11 @@ export interface WingsAuthorizationFunctionArguments extends WingsResults {
   eventName: string;
 }
 
+export interface WingsAuthorizationFunctionArgumentsUpload extends WingsResultsUpload {
+  type: "jwt";
+  eventName: "uploadFile";
+}
+
 export interface WingsAuthorizationFunctionArgumentsWebsocket extends WingsResultsWebSocket {
   type: "ws";
   eventName: string;
@@ -32,6 +37,11 @@ export interface WingsResults {
   send: (body: string) => WingsResults;
   json: (body: object) => WingsResults;
   stream: (readable: ReadStream) => WingsResults;
+}
+
+export interface WingsResultsUpload extends WingsResults {
+  body: undefined;
+  acceptUpload: (save_path: string) => Promise<WingsResults>; // Check Content-Length to limit file size.
 }
 
 export interface WingsResultsWebSocket {
@@ -52,9 +62,11 @@ declare module "events" {
   interface EventEmitter {
     on(eventName: string, listener: (data: WingsAuthorizationFunctionArguments) => void): Wings;
     on(eventName: "openServerConsole", listener: (data: WingsAuthorizationFunctionArgumentsWebsocket) => void): Wings;
+    on(eventName: "uploadFile", listener: (data: WingsAuthorizationFunctionArgumentsUpload) => void): Wings;
 
     emit(eventName: string, args: WingsResults): boolean | Promise<boolean>;
     emit(eventName: "openServerConsole", args: WingsResultsWebSocket): boolean | Promise<boolean>;
+    emit(eventName: "uploadFile", args: WingsResultsUpload): boolean | Promise<boolean>;
   }
 }
 
