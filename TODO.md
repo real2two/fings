@@ -8,8 +8,4 @@
 
 ## Untested but added
 
-- Add checking for Typia in emit().
-
-## Added
-
-- Finish body checking types. (not fully tested)
+None.
