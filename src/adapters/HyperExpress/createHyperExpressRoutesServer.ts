@@ -12,12 +12,12 @@ import type { Emit } from "../createHyperExpressClient";
 export function createHyperExpressRoutesServer({ wings, emit, router }: { wings: Wings, emit: Emit, router: Router }) {
   const serverRouter = new Router();
 
-  router.get("/:server", (req, res) => {
+  serverRouter.get("/:server", (req, res) => {
     // GET /api/servers/:server
     emit(WingsEvents.getServerDetails, req, res);
   });
   
-  router.delete("/:server", (req, res) => {
+  serverRouter.delete("/:server", (req, res) => {
     // DELETE /api/servers/:server
     emit(WingsEvents.deleteServer, req, res);
   });

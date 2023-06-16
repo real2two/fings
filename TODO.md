@@ -1,0 +1,9 @@
+# TODO
+
+- Finish body checking types.
+- Create functions for WebSocket console requests and responses.
+- Compile TS to JS version, so you don't need to install Typia yourself.
+
+## Untested but added
+
+- Add checking for Typia in emit().

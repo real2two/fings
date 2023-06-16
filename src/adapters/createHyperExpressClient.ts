@@ -41,6 +41,8 @@ export function createHyperExpressClient(wings: Wings) {
 export function createWingsResultsObject({ req, res, body }: { req: Request, res: Response, body?: any }) {
   const args: WingsResults = {
     headers: req.headers,
+    query: { ...req.query_parameters },
+    params: req.path_parameters || {},
     body,
     status: status => {
       res.status(status);

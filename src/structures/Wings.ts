@@ -1,5 +1,7 @@
 import { EventEmitter } from "events";
+import { v4 as uuidv4 } from "uuid";
 import { WingsEvents, WingsEventsJWT } from "./WingsEvents";
+import { Check } from "./WingsTypeFunctions";
 import type { ReadStream } from "fs";
 
 // Wings options
@@ -34,6 +36,12 @@ export interface WingsAuthorizationFunctionArgumentsWebsocket extends WingsResul
 
 export interface WingsResults {
   headers: {
+    [key: string]: string;
+  }
+  params: {
+    [key: string]: string;
+  }
+  query: {
     [key: string]: string;
   }
   body: any;
@@ -91,19 +99,36 @@ export class Wings extends EventEmitter {
   }
 
   async emit(eventName: string, args: WingsResults | WingsResultsWebSocket) {
-    if (eventName === WingsEvents.openServerConsole) {
+    if (eventName === WingsEvents.openServerConsole) { // Hardcoded exception for openServerConsole, since it's a websocket.
       return super.emit(eventName, {
         type: "ws",
         eventName,
         ...args,
       } as WingsAuthorizationFunctionArgumentsWebsocket);
-    } else {
-      if (await this.authorization({
-        type: WingsEventsJWT.includes(eventName) ? "jwt" : "token",
-        eventName,
-        ...args as WingsResults,
-      }) === false) return false;
-      return super.emit(eventName, args as WingsAuthorizationFunctionArguments);
     }
+
+    // @ts-ignore This is necessary because eventName can be any string value, and TypeScript doesn't like that.
+    const checkArgTypes = Check[eventName];
+    if (typeof checkArgTypes === "function") {
+      if (!checkArgTypes(args)) {
+        (args as WingsAuthorizationFunctionArguments)
+          .status(400)
+          .json({
+            error: "An unexpected error was encountered while processing this request",
+            request_id: uuidv4() // Placeholder. Should I allow a custom handler for error responses?
+          });
+        return false;
+      }
+    }
+
+    // Check authorization
+    if (await this.authorization({
+      type: WingsEventsJWT.includes(eventName) ? "jwt" : "token",
+      eventName,
+      ...args as WingsResults,
+    }) === false) return false;
+
+    // Emit the event.
+    return super.emit(eventName, args as WingsAuthorizationFunctionArguments);
   }
 }
