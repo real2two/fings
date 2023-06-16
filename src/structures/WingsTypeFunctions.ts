@@ -56,7 +56,14 @@ export const Check = {
   triggerServerSync: typia.createIs<TriggerServerSyncType>(),
   
   createServerBackup: typia.createIs<CreateServerBackupType>(),
-  restoreServerBackup: typia.createIs<RestoreServerBackupType>(),
+  restoreServerBackup: (() => {
+    const restoreServerBackup = typia.createIs<RestoreServerBackupType>();
+    return ((input: unknown) => {
+      if (!restoreServerBackup(input)) return false;
+      if (input.adapter === "s3" && typeof input?.download_url !== "string") return false;
+      return true;
+    });
+  })(),
   deleteServerBackup: typia.createIs<DeleteServerBackupType>(),
   
   getServerFileContent: typia.createIs<GetServerFileContentType>(),
