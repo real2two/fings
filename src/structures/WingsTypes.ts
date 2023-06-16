@@ -1,143 +1,143 @@
-export interface DownloadBackupType {
+export interface DownloadBackupType { // GET /download/backup
 
 }
 
-export interface DownloadFileType {
+export interface DownloadFileType { // GET /download/file
 
 }
 
-export interface UploadFileType {
+export interface UploadFileType { // POST /upload/file
 
 }
 
-export interface RevokeServerJTIsType {
+export interface RevokeServerJTIsType { // POST /api/servers/:server/ws/deny
 
 }
 
-export interface UpdateConfigurationType {
+export interface UpdateConfigurationType { // POST /api/update
 
 }
 
-export interface GetSystemInformationType {
+export interface GetSystemInformationType { // GET /api/system
 
 }
 
-export interface GetServerLogsType {
+export interface GetServerLogsType { // GET /api/servers/:server/logs
 
 }
 
-export interface ChangeServerPowerStateType {
+export interface ChangeServerPowerStateType { // POST /api/servers/:server/power
 
 }
 
-export interface SendServerCommandType {
+export interface SendServerCommandType { // POST /api/servers/:server/commands
 
 }
 
-export interface PerformServerInstallType {
+export interface PerformServerInstallType { // POST /api/servers/:server/install
 
 }
 
-export interface PerformServerReinstallType {
+export interface PerformServerReinstallType { // POST /api/servers/:server/reinstall
 
 }
 
-export interface TriggerServerSyncType {
+export interface TriggerServerSyncType { // POST /api/servers/:server/sync
 
 }
 
-export interface CreateServerBackupType {
+export interface CreateServerBackupType { // POST /api/servers/:server/backup
 
 }
 
-export interface RestoreServerBackupType {
+export interface RestoreServerBackupType { // POST /api/servers/:server/backup/:backup/restore
 
 }
 
-export interface DeleteServerBackupType {
+export interface DeleteServerBackupType { // DELETE /api/servers/:server/backup/:backup
 
 }
 
-export interface GetServerFileContentType {
+export interface GetServerFileContentType { // GET /api/servers/:server/files/contents
 
 }
 
-export interface GetServerFileDirectoryType {
+export interface GetServerFileDirectoryType { // GET /api/servers/:server/files/list-directory
 
 }
 
-export interface RenameServerFilesType {
+export interface RenameServerFilesType { // PUT /api/servers/:server/files/rename
 
 }
 
-export interface CopyServerFileType {
+export interface CopyServerFileType { // POST /api/servers/:server/files/copy
 
 }
 
-export interface WriteServerFileContentType {
+export interface WriteServerFileContentType { // POST /api/servers/:server/files/write
 
 }
 
-export interface CreateServerFileDirectoryType {
+export interface CreateServerFileDirectoryType { // POST /api/servers/:server/files/create-directory
 
 }
 
-export interface DeleteServerFileType {
+export interface DeleteServerFileType { // POST /api/servers/:server/files/delete
 
 }
 
-export interface CompressServerFilesType {
+export interface CompressServerFilesType { // POST /api/servers/:server/files/compress
 
 }
 
-export interface DecompressServerFileType {
+export interface DecompressServerFileType { // POST /api/servers/:server/files/decompress
 
 }
 
-export interface ChmodServerFilesType {
+export interface ChmodServerFilesType { // POST /api/servers/:server/files/chmod
 
 }
 
-export interface GetPullServerFileType {
+export interface GetPullServerFileType { // GET /api/servers/:server/files/pull
 
 }
 
-export interface PullServerFileType {
+export interface PullServerFileType { // POST /api/servers/:server/files/pull
 
 }
 
-export interface DeletePullServerFileType {
+export interface DeletePullServerFileType { // DELETE /api/servers/:server/files/pull/:download
 
 }
 
-export interface GetServersType {
+export interface GetServersType { // GET /api/servers
 
 }
 
-export interface CreateServerType {
+export interface CreateServerType { // POST /api/servers
 
 }
 
-export interface GetServerDetailsType {
+export interface GetServerDetailsType { // GET /api/servers/:server
 
 }
 
-export interface DeleteServerType {
+export interface DeleteServerType { // DELETE /api/servers/:server
 
 }
 
-export interface StartServerTransferType {
+export interface StartServerTransferType { // POST /api/transfers
 
 }
 
-export interface DeleteIncomingServerTransferType {
+export interface DeleteIncomingServerTransferType { // DELETE /api/transfers/:server
 
 }
 
-export interface CreateServerTransferType {
+export interface CreateServerTransferType { // POST /api/servers/:server/transfer
 
 }
 
-export interface DeleteOutgoingServerTransferType {
+export interface DeleteOutgoingServerTransferType { // DELETE /api/servers/:server/transfer
 
 }
