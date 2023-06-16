@@ -36,9 +36,52 @@ import type {
   DeleteIncomingServerTransferType,
   CreateServerTransferType,
   DeleteOutgoingServerTransferType,
-} from "./WingsTypes";
+} from "./WingsBodyTypes";
 
-export const Check = {
+export type WingsBodyCheckKeys = // Everything besides openServerConsole.
+  "downloadBackup" |
+  "downloadFile" |
+  "uploadFile" |
+  "revokeServerJTIs" |
+  "updateConfiguration" |
+  "getSystemInformation" |
+  "getServerLogs" |
+  "changeServerPowerState" |
+  "sendServerCommand" |
+  "performServerInstall" |
+  "performServerReinstall" |
+  "triggerServerSync" |
+  "createServerBackup" |
+  "restoreServerBackup" |
+  "deleteServerBackup" |
+  "getServerFileContent" |
+  "getServerFileDirectory" |
+  "renameServerFiles" |
+  "copyServerFile" |
+  "writeServerFileContent" |
+  "createServerFileDirectory" |
+  "deleteServerFile" |
+  "compressServerFiles" |
+  "decompressServerFile" |
+  "chmodServerFiles" |
+  "getPullServerFile" |
+  "pullServerFile" |
+  "deletePullServerFile" |
+  "getServers" |
+  "createServer" |
+  "getServerDetails" |
+  "deleteServer" |
+  "startServerTransfer" |
+  "deleteIncomingServerTransfer" |
+  "createServerTransfer" |
+  "deleteOutgoingServerTransfer";
+
+export const WingsBodyCheck = {
+  check: (eventName: WingsBodyCheckKeys, data: unknown) => {
+    const checkArgTypes = WingsBodyCheck[eventName];
+    return typeof checkArgTypes === "function" && checkArgTypes(data);
+  },
+
   downloadBackup: typia.createIs<DownloadBackupType>(),
   downloadFile: typia.createIs<DownloadFileType>(),
   uploadFile: typia.createIs<UploadFileType>(),

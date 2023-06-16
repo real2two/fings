@@ -72,7 +72,7 @@ export interface GetServerLogsType { // GET /api/servers/:server/logs
 
 export interface ChangeServerPowerStateType { // POST /api/servers/:server/power
   body: {
-    action: string;
+    action: "start" | "stop" | "kill" | "restart";
     wait_seconds: number;
   }
 }

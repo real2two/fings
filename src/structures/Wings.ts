@@ -1,8 +1,7 @@
 import { EventEmitter } from "events";
-import { v4 as uuidv4 } from "uuid";
 import { WingsEvents, WingsEventsJWT } from "./WingsEvents";
-import { Check } from "./WingsTypeFunctions";
 import type { ReadStream } from "fs";
+import type { WingsBodyCheckKeys } from "./WingsBodyCheck";
 
 // Wings options
 
@@ -15,11 +14,11 @@ interface WingsOptions {
 
 // Authorization argument types
 
-type WingsAuthorizationFunction = (evt: WingsAuthorizationFunctionArguments | WingsAuthorizationFunctionArgumentsWebsocket) => boolean | Promise<boolean>;
+type WingsAuthorizationFunction = (evt: WingsAuthorizationFunctionArguments) => boolean | Promise<boolean>;
 
 export interface WingsAuthorizationFunctionArguments extends WingsResults {
   type: "token" | "jwt";
-  eventName: string;
+  eventName: WingsBodyCheckKeys;
 }
 
 export interface WingsAuthorizationFunctionArgumentsUpload extends WingsResultsUpload {
@@ -107,24 +106,10 @@ export class Wings extends EventEmitter {
       } as WingsAuthorizationFunctionArgumentsWebsocket);
     }
 
-    // @ts-ignore This is necessary because eventName can be any string value, and TypeScript doesn't like that.
-    const checkArgTypes = Check[eventName];
-    if (typeof checkArgTypes === "function") {
-      if (!checkArgTypes(args)) {
-        (args as WingsAuthorizationFunctionArguments)
-          .status(400)
-          .json({
-            error: "An unexpected error was encountered while processing this request",
-            request_id: uuidv4() // Placeholder. Should I allow a custom handler for error responses?
-          });
-        return false;
-      }
-    }
-
     // Check authorization
     if (await this.authorization({
       type: WingsEventsJWT.includes(eventName) ? "jwt" : "token",
-      eventName,
+      eventName: eventName as WingsBodyCheckKeys,
       ...args as WingsResults,
     }) === false) return false;
 
