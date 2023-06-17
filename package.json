@@ -2,7 +2,7 @@
   "name": "fings",
   "version": "0.0.1",
   "description": "Create your own fake Wings instances and panel remote routes, which you can customize what it does.",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "prepare": "ts-patch install",
     "dist": "npx tsc"
