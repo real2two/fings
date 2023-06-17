@@ -43,6 +43,9 @@ export interface WingsResults {
   query: {
     [key: string]: string;
   }
+  jwt: {
+    [key: string]: any;
+  }
   body: any;
 
   /**

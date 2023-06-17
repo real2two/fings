@@ -43,6 +43,7 @@ export function createWingsResultsObject({ req, res, body }: { req: Request, res
     headers: req.headers,
     query: { ...req.query_parameters },
     params: req.path_parameters || {},
+    jwt: {},
     body,
     status: status => {
       res.status(status);

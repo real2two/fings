@@ -24,7 +24,6 @@ export function createHyperExpressRoutesDownloadUpload({ wings, emit, router }: 
           let fileReceived = false;
           await req.multipart(async field => {
             if (field.file) {
-              console.log(field.file?.name)
               if (!field.file.name) throw new Error("Missing file name");
               fileReceived = true;
               await field.write(`${save_path.endsWith("/") ? save_path.slice(0, -1) : save_path}/${field.file.name}`); // Does this work? Check if this doesn't break folders as well.

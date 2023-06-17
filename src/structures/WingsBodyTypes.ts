@@ -1,5 +1,5 @@
 export interface DownloadBackupType { // GET /download/backup
-  query: {
+  jwt: {
     server_uuid: string;
     backup_uuid: string;
     unique_id: string;
@@ -7,7 +7,7 @@ export interface DownloadBackupType { // GET /download/backup
 }
 
 export interface DownloadFileType { // GET /download/file
-  query: {
+  jwt: {
     file_path: string;
     server_uuid: string;
     unique_id: string;
@@ -16,9 +16,9 @@ export interface DownloadFileType { // GET /download/file
 
 export interface UploadFileType { // POST /upload/file
   headers: {
-    "Content-Type": "multipart/form-data";
+    "content-type": "multipart/form-data" | `multipart/form-data;${string}`;
   }
-  query: {
+  jwt: {
     server_uuid: string;
     user_uuid: string;
     unique_id: string;
@@ -140,7 +140,7 @@ export interface CopyServerFileType { // POST /api/servers/:server/files/copy
 
 export interface WriteServerFileContentType { // POST /api/servers/:server/files/write
   headers: {
-    "Content-Type": "text/plain"
+    "content-type": "text/plain" | `text/plain;${string}`;
   }
   query: {
     file: string;
@@ -214,6 +214,9 @@ export interface GetServerDetailsType {} // GET /api/servers/:server
 export interface DeleteServerType {} // DELETE /api/servers/:server
 
 export interface StartServerTransferType { // POST /api/transfers
+  jwt: {
+    sub: string;
+  }
   body: {
     url: string;
     token: string;
