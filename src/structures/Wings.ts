@@ -118,8 +118,8 @@ export interface WingsResultsWebSocket {
   
   // TODO: Add more functions for handling the websocket here.
 
-  onMessage: ((message: string) => void) | undefined;
-  onClose: (() => void) | undefined;
+  onMessage: (listener: (message: { event: string, args: Array<any> }) => void) => WingsResultsWebSocket;
+  onClose: (listener: () => void) => WingsResultsWebSocket;
 }
 
 // Extended event emitter

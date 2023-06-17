@@ -9,6 +9,9 @@ export function createHyperExpressRoutesWebSocket({ wings, router }: { wings: Wi
     max_payload_length: 32 * 1024
   }, ws => {
     // WS /api/servers/:server/ws
+
+    let onMessage: (message: { event: string, args: Array<any> }) => void;
+    let onClose: () => void;
     
     const args: WingsResultsWebSocket = {
       ip: ws.ip,
@@ -30,22 +33,51 @@ export function createHyperExpressRoutesWebSocket({ wings, router }: { wings: Wi
         return args;
       },
     
-      onMessage: undefined,
-      onClose: undefined,
+      onMessage: listener => {
+        onMessage = listener;
+        return args;
+      },
+      onClose: listener => {
+        onClose = listener;
+        return args;
+      },
     };
     
     ws.on("message", (message, is_binary) => {
-      if (is_binary) return; // Do I need this?
+      if (is_binary) return ws.destroy(); // Do I need this?
+      let value;
+      try {
+        value = JSON.parse(message);
+      } catch(err) {
+        return ws.destroy();
+      }
+
+      if (
+        !["auth", "set state", "send command", "send logs", "send stats"].includes(value.event) ||
+        !Array.isArray(value.args)
+      ) return ws.destroy();
+
+      switch (value.event) {
+        case "auth":
+        case "send command":
+          if (value.args.length !== 1 || typeof value.args[0] !== "string") {
+            return;
+          }
+          break;
+        case "set state":
+          if (value.args.length !== 1 || !["start", "stop", "restart", "kill"].includes(value.args[0])) {
+            return;
+          }
+          break;
+      }
+
       if (typeof args.onMessage !== "function") return;
-
-      // TODO: Add type checking here.
-
-      args.onMessage(message);
+      onMessage(value);
     });
 
     ws.on("close", () => {
       if (typeof args.onClose !== "function") return;
-      args.onClose();
+      onClose();
     });
 
     wings.emit(WingsEvents.openServerConsole, args);
