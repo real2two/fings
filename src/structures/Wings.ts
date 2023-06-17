@@ -104,7 +104,7 @@ export interface WingsResultsWebSocket {
    * @param message The message as a JSON value.
    * @returns The wings result object.
    */
-  json: (message: object) => WingsResultsWebSocket;
+  json: (message: { event: string; args?: Array<any> }) => WingsResultsWebSocket;
   /**
    * Close the websocket.
    * @returns The wings result object.
@@ -118,7 +118,7 @@ export interface WingsResultsWebSocket {
   
   // TODO: Add more functions for handling the websocket here.
 
-  onMessage: (listener: (message: { event: string, args: Array<any> }) => void) => WingsResultsWebSocket;
+  onMessage: (listener: (message: { event: string; args: Array<any> }) => void) => WingsResultsWebSocket;
   onClose: (listener: () => void) => WingsResultsWebSocket;
 }
 
